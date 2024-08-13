@@ -5,6 +5,7 @@ const app = express();
 const routes = require("./routes");
 
 const connectDB = require("./database/connection");
+const setupErrorHandler = require("./config/errorHandler");
 
 connectDB();
 
@@ -20,5 +21,7 @@ app.use(routes);
 app.use("*", (req, res) => {
   res.status(404).render("not-found");
 });
+
+setupErrorHandler(app);
 
 module.exports = app;

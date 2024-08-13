@@ -4,14 +4,15 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "NODE_ENV=productionnode index.js",
+    "dev": "NODE_ENV=development nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.5",
+    "errorhandler": "^1.5.1",
     "express": "^4.19.2",
     "mongoose": "^8.5.2",
     "morgan": "^1.10.0",
