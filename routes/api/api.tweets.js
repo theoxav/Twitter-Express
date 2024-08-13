@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const Tweet = require("../database/models/tweet.model");
+const Tweet = require("../../database/models/tweet.model");
 
 router.post("/", (req, res) => {
   const body = req.body;

@@ -24,3 +24,13 @@
 .btn-tweet {
   border-radius: 30px;
 }
+
+.tweet-element {
+  border-radius: 0px;
+  font-size: 14px;
+  border-top: 0px;
+}
+
+.tweet-element:first-child {
+  border-top: 1px solid #ddd;
+}
