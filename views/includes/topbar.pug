@@ -1,19 +1,24 @@
-nav(class="navbar navbar-expand-lg navbar-light bg-light")
-  a(class="navbar-brand" href="/tweets")
-    img(width="30" height="30" src="/images/twitter.webp" alt="Logo")
-  button(class="navbar-toggler", type="button", data-bs-toggle="collapse", data-bs-target="#navbarNav", aria-controls="navbarNav", aria-expanded="false", aria-label="Toggle navigation")
-    span(class="navbar-toggler-icon")
-  div(class="collapse navbar-collapse", id="navbarNav")
-    ul(class="navbar-nav ms-auto d-flex align-items-center")
-      if user
-        li(class="nav-item")
-          a(class="btn btn-primary btn-tweet me-3", href="/tweets/new") Tweet
-        li(class="nav-item")
-          form(method="post" action="/auth/signout" class="d-inline")
-            button(type="submit", class="btn-logout", style="")
-              i(class="fa-solid fa-power-off")
-      else
-        li(class="nav-item")
-          a(class="nav-link", href="/auth/signin/form") Connexion
-        li(class="nav-item")
-          a(class="nav-link", href="/users/signup/form") Inscription
+nav.navbar.navbar-expand-lg.bg-body-tertiary
+  .container-fluid
+    a.navbar-brand(href="/tweets")
+      img(src="/images/twitter.webp", width="30", height="30", alt="Logo")
+    button.navbar-toggler(type="button", data-bs-toggle="collapse", data-bs-target="#navbarNav", aria-controls="navbarNav", aria-expanded="false", aria-label="Toggle navigation")
+      span.navbar-toggler-icon
+    .collapse.navbar-collapse(id="navbarNav")
+      ul.navbar-nav.ms-auto.d-flex.align-items-center
+        if user
+          li.nav-item
+            a.btn.btn-primary.btn-tweet.me-3(href="/tweets/new") Tweet
+          li.nav-item
+            form(method="post", action="/auth/signout", class="d-inline d-lg-none")
+              button(type="submit", class="btn-logout")
+                | Déconnexion
+          li.nav-item.d-none.d-lg-block
+            form(method="post", action="/auth/signout", class="d-inline")
+              button(type="submit", class="btn-logout")
+                i(class="fa-solid fa-power-off")
+        else
+          li.nav-item
+            a.nav-link(href="/auth/signin/form") Connexion
+          li.nav-item
+            a.nav-link(href="/users/signup/form") Inscription
