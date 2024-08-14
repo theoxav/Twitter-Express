@@ -1,5 +1,10 @@
 const User = require("../database/models/user.model");
 
+exports.isEmailUnique = async (email) => {
+  const user = await User.findOne({ email }).exec();
+  return user === null;
+};
+
 exports.createUser = async (user) => {
   try {
     const hashedPassword = await User.hashPassword(user.password);
@@ -11,6 +16,6 @@ exports.createUser = async (user) => {
 
     return newUser.save();
   } catch (e) {
-    throw e;
+    next(e);
   }
 };
