@@ -6,7 +6,10 @@ module.exports = (app) => {
       secret: process.env.SESSION_SECRET || "secret",
       resave: false,
       saveUninitialized: true,
-      cookie: { secure: process.env.NODE_ENV === "production" },
+      cookie: {
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 3600000,
+      },
     })
   );
 };

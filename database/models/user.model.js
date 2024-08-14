@@ -17,6 +17,7 @@ const userSchema = schema({
     type: String,
     required: [true, "Le champ 'password' est requis"],
   },
+  avatar: { type: String, default: "images/default-profile.svg" },
 });
 
 userSchema.statics.hashPassword = async (password) => {

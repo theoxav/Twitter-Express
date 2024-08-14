@@ -14,7 +14,7 @@ exports.createTweet = (tweet) => {
 };
 
 exports.deleteTweet = (tweetId) => {
-  return Tweet.findByIdAndDelete(tweetId);
+  return Tweet.findByIdAndDelete(tweetId, { runValidators: true });
 };
 
 exports.updateTweet = (tweetId, tweet) => {

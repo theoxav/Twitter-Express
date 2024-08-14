@@ -1,3 +1,5 @@
+const upload = require("../config/multer");
+const User = require("../database/models/user.model");
 const {
   createUser,
   isEmailUnique,
@@ -29,3 +31,17 @@ exports.signup = async (req, res, next) => {
     res.render("users/user-form", { errors: [e.message] });
   }
 };
+
+exports.uploadImage = [
+  upload.single("avatar"),
+  async (req, res, next) => {
+    try {
+      const user = await User.findById(req.session.userId);
+      user.avatar = `/images/avatars/${req.file.filename}`;
+      await user.save();
+      res.redirect("/");
+    } catch (e) {
+      next(e);
+    }
+  },
+];

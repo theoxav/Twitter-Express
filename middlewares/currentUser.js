@@ -8,6 +8,7 @@ const currentUser = async (req, res, next) => {
         res.locals.user = {
           username: user.username,
           email: user.email,
+          avatar: user.avatar,
         };
       } else {
         res.locals.user = null;

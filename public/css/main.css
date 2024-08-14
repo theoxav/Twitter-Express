@@ -21,6 +21,10 @@ body {
   max-width: 300px;
 }
 
+#image-profile {
+  cursor: pointer;
+}
+
 .btn-tweet,
 .btn-logout {
   border-radius: 30px;
