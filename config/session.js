@@ -2,12 +2,13 @@ const { app } = require("../app");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const Database = require("../database/connection");
+const config = require("../config/config");
 
 const dbInstance = Database.getInstance();
 
 app.use(
   session({
-    secret: "je suis un secret",
+    secret: config.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
