@@ -23,6 +23,10 @@ userSchema.statics.hashPassword = async (password) => {
   return bcrypt.hash(password, 12);
 };
 
+userSchema.methods.comparePasswords = function (candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
+
 const User = mongoose.model("user", userSchema);
 
 module.exports = User;

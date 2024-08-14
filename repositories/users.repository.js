@@ -5,6 +5,10 @@ exports.isEmailUnique = async (email) => {
   return user === null;
 };
 
+exports.getUserByEmail = (email) => {
+  return User.findOne({ email }).exec();
+};
+
 exports.createUser = async (user) => {
   try {
     const hashedPassword = await User.hashPassword(user.password);
