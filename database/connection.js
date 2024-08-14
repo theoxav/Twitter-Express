@@ -2,22 +2,34 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const config = require("../config/config");
 
-let isConnected = false;
-
-const connectDB = async () => {
-  if (isConnected) {
-    console.log("MongoDB is already connected");
-    return;
+class Database {
+  constructor() {
+    this._connect();
   }
 
-  try {
-    await mongoose.connect(config.MONGODB_URI);
-    isConnected = true;
-    console.log(`MongoDB Connected`);
-  } catch (err) {
-    console.error(`Error connecting to MongoDB: ${err.message}`);
-    process.exit(1);
+  _connect() {
+    mongoose
+      .connect(config.MONGODB_URI)
+      .then(() => {
+        console.log("Database connection successful");
+      })
+      .catch((err) => {
+        console.error("Database connection error:", err);
+      });
   }
-};
 
-module.exports = connectDB;
+  static getInstance() {
+    if (!Database.instance) {
+      Database.instance = new Database();
+    }
+    return Database.instance;
+  }
+
+  getClientPromise() {
+    return mongoose.connection
+      .asPromise()
+      .then(() => mongoose.connection.getClient());
+  }
+}
+
+module.exports = Database;

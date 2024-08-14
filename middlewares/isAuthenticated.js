@@ -1,6 +1,9 @@
 module.exports = (req, res, next) => {
-  if (req.session && req.session.userId) {
-    return next();
+  if (req.isAuthenticated()) {
+    next();
+  } else {
+    console.log("User is not authenticated");
+
+    res.redirect("/auth/signin/form");
   }
-  res.redirect("/auth/signin/form");
 };

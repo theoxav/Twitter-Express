@@ -1,39 +1,40 @@
-const { getUserByEmail } = require("../repositories/users.repository");
+const passport = require("passport");
 
 exports.signinForm = (req, res, next) => {
-  res.render("auth/auth-form", { errors: null });
+  res.render("auth/auth-form", {
+    errors: null,
+    isAuthenticated: req.isAuthenticated(),
+    currentUser: req.user,
+  });
 };
 
-exports.signin = async (req, res, next) => {
-  const { email, password } = req.body;
-
-  try {
-    const user = await getUserByEmail(email);
-    if (!user) {
-      return res.render("auth/auth-form", {
-        errors: ["Email ou mot de passe incorrect"],
+exports.signin = (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      next(err);
+    } else if (!user) {
+      res.render("auth/auth-form", {
+        errors: [info.message],
+        isAuthenticated: req.isAuthenticated(),
+        currentUser: req.user,
+      });
+    } else {
+      req.login(user, (err) => {
+        if (err) {
+          next(err);
+        } else {
+          res.redirect("/tweets");
+        }
       });
     }
-
-    const isMatch = await user.comparePasswords(password);
-    if (!isMatch) {
-      return res.render("auth/auth-form", {
-        errors: ["Email ou mot de passe incorrect"],
-      });
-    }
-
-    req.session.userId = user._id;
-    req.session.username = user.username;
-
-    res.redirect("/tweets");
-  } catch (e) {
-    next(e);
-  }
+  })(req, res, next);
 };
 
 exports.signout = (req, res, next) => {
-  req.session.destroy((err) => {
-    if (err) next(err);
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
     res.redirect("/auth/signin/form");
   });
 };

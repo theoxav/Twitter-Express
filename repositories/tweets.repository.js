@@ -13,14 +13,14 @@ exports.createTweet = (tweet) => {
   return newTweet.save();
 };
 
-exports.deleteTweet = (tweetId) => {
-  return Tweet.findByIdAndDelete(tweetId, { runValidators: true });
-};
-
 exports.updateTweet = (tweetId, tweet) => {
   return Tweet.findByIdAndUpdate(
     tweetId,
     { $set: tweet },
     { runValidators: true }
   );
+};
+
+exports.deleteTweet = (tweetId) => {
+  return Tweet.findByIdAndDelete(tweetId, { runValidators: true });
 };
