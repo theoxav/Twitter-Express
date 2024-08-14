@@ -1,7 +1,9 @@
 const router = require("express").Router();
-const tweets = require("./tweets");
+const tweetsRoutes = require("./tweets");
+const usersRoutes = require("./users");
 
-router.use("/tweets", tweets);
+router.use("/tweets", tweetsRoutes);
+router.use("/users", usersRoutes);
 
 router.get("/", (req, res) => {
   res.redirect("/tweets");

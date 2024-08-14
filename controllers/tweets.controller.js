@@ -5,7 +5,7 @@ const {
   createTweet,
   deleteTweet,
   updateTweet,
-} = require("../repositories/tweets.repositories");
+} = require("../repositories/tweets.repository");
 
 exports.tweetList = async (req, res, next) => {
   try {
