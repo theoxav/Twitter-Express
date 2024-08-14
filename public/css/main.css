@@ -71,6 +71,10 @@ body {
   border-top: 0px;
 }
 
+.pointer-cursor {
+  cursor: pointer;
+}
+
 @media (max-width: 991.98px) {
   .btn-tweet,
   .btn-logout {

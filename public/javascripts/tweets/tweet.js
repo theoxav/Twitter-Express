@@ -3,20 +3,17 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 function bindTweet() {
-  const elements = document.querySelectorAll(".btn-danger");
+  const elements = document.querySelectorAll(".fa-minus-circle");
   const tweetContainer = document.querySelector("#tweet-list-container");
 
   elements.forEach((e) => {
     e.addEventListener("click", ($event) => {
-      console.log("click");
-
       const tweetId = $event.target.getAttribute("tweetid");
       axios
         .delete("/tweets/" + tweetId)
         .then(function (response) {
           tweetContainer.innerHTML = response.data;
           bindTweet();
-          location.reload();
         })
         .catch(function (err) {
           console.log(err);

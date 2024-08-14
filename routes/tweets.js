@@ -11,10 +11,10 @@ const { checkTweetOwnership } = require("../middlewares/checkTweetOwnership");
 const isAuthenticated = require("../middlewares/isAuthenticated");
 
 router.get("/", tweetList);
-router.get("/new", isAuthenticated, tweetNew);
-router.post("/", isAuthenticated, tweetCreate);
-router.delete("/:tweetId", isAuthenticated, checkTweetOwnership, tweetDelete);
-router.get("/edit/:tweetId", isAuthenticated, checkTweetOwnership, tweetEdit);
-router.post("/update/:tweetId", isAuthenticated, checkTweetOwnership, tweetUpdate);
+router.get("/new", tweetNew);
+router.post("/", tweetCreate);
+router.delete("/:tweetId", checkTweetOwnership, tweetDelete);
+router.get("/edit/:tweetId", checkTweetOwnership, tweetEdit);
+router.post("/update/:tweetId", checkTweetOwnership, tweetUpdate);
 
 module.exports = router;
