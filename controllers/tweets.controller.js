@@ -9,8 +9,10 @@ const {
 
 exports.tweetList = async (req, res, next) => {
   try {
+    const userId = req.session.userId || null;
     const tweets = await getTweets();
-    res.render("tweets/tweet", { tweets });
+
+    res.render("tweets/tweet", { tweets, userId });
   } catch (e) {
     next(e);
   }
@@ -23,6 +25,7 @@ exports.tweetNew = (req, res, next) => {
 exports.tweetCreate = async (req, res, next) => {
   try {
     const body = req.body;
+    body.author = req.session.userId;
     await createTweet(body);
     res.redirect("/tweets");
   } catch (e) {

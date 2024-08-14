@@ -1,7 +1,7 @@
 const Tweet = require("../database/models/tweet.model");
 
 exports.getTweets = () => {
-  return Tweet.find({}).exec();
+  return Tweet.find({}).populate("author", "_id username").exec();
 };
 
 exports.getTweet = (tweetId) => {
