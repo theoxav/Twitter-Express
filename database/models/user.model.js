@@ -24,7 +24,7 @@ userSchema.statics.hashPassword = async (password) => {
   return bcrypt.hash(password, 12);
 };
 
-userSchema.methods.comparePasswords = function (candidatePassword) {
+userSchema.methods.comparePassword = function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };
 

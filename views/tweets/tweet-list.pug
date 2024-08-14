@@ -1,9 +1,8 @@
 if tweets
   each tweet in tweets
     div(class="card tweet-element")
-      div(class="card-body")
-        
-        if tweet.author && userId && tweet.author._id.toString() === userId.toString()
+      div(class="card-body")  
+        if tweet.author && currentUser && tweet.author._id.toString() === currentUser._id.toString()         
           a(class="card-text" href="/tweets/edit/" + tweet._id)= tweet.content
           button(class="btn btn-danger mt-2 float-end" tweetid=tweet._id) supprimer
         else

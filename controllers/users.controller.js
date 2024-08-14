@@ -7,7 +7,11 @@ const {
 const { userSchema } = require("../validations/users.validation");
 
 exports.signupForm = (req, res, next) => {
-  res.render("users/user-form", { errors: null });
+  res.render("users/user-form", {
+    errors: null,
+    isAuthenticated: req.isAuthenticated(),
+    currentUser: req.user,
+  });
 };
 
 exports.signup = async (req, res, next) => {
@@ -28,7 +32,11 @@ exports.signup = async (req, res, next) => {
     const user = await createUser(body);
     res.redirect("/auth/signin/form");
   } catch (e) {
-    res.render("users/user-form", { errors: [e.message] });
+    res.render("users/user-form", {
+      errors: [e.message],
+      isAuthenticated: req.isAuthenticated(),
+      currentUser: req.user,
+    });
   }
 };
 
@@ -36,7 +44,7 @@ exports.uploadImage = [
   upload.single("avatar"),
   async (req, res, next) => {
     try {
-      const user = await User.findById(req.session.userId);
+      const user = await User.findById(req.user._id);
       user.avatar = `/images/avatars/${req.file.filename}`;
       await user.save();
       res.redirect("/");

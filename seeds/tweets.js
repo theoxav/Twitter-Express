@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const User = require("../database/models/user.model");
 const Tweet = require("../database/models/tweet.model");
-const connectDB = require("../database/connection");
+const Database = require("../database/connection");
 
-connectDB();
+Database.getInstance();
 
 const tweetsData = [
   { content: "Hello world from John!", username: "john_doe" },

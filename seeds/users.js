@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 const User = require("../database/models/user.model");
-const connectDB = require("../database/connection");
+const Database = require("../database/connection");
 
-connectDB();
+Database.getInstance();
 
 const usersData = [
-  { username: "john_doe", email: "john.doe@example.com" },
-  { username: "jane_smith", email: "jane.smith@example.com" },
-  { username: "alice_jones", email: "alice.jones@example.com" },
+  { username: "john_doe", email: "johndoe@example.com" },
+  { username: "jane_smith", email: "janesmith@example.com" },
+  { username: "alice_jones", email: "alicejones@example.com" },
 ];
 
 async function seedUsers() {

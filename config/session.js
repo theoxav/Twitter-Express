@@ -1,15 +1,23 @@
+const { app } = require("../app");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
+const Database = require("../database/connection");
+const config = require("../config/config");
 
-module.exports = (app) => {
-  app.use(
-    session({
-      secret: process.env.SESSION_SECRET || "secret",
-      resave: false,
-      saveUninitialized: true,
-      cookie: {
-        secure: process.env.NODE_ENV === "production",
-        maxAge: 3600000,
-      },
-    })
-  );
-};
+const dbInstance = Database.getInstance();
+
+app.use(
+  session({
+    secret: config.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: false,
+      maxAge: 1000 * 60 * 60 * 24 * 14,
+    },
+    store: MongoStore.create({
+      clientPromise: dbInstance.getClientPromise(),
+      ttl: 60 * 60 * 24 * 14,
+    }),
+  })
+);
