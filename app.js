@@ -7,6 +7,7 @@ const routes = require("./routes");
 const connectDB = require("./database/connection");
 const setupErrorHandler = require("./config/errorHandler");
 const configureSession = require("./config/session");
+const currentUser = require("./middlewares/currentUser");
 
 connectDB();
 
@@ -20,12 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 
 configureSession(app);
 
-app.use((req, res, next) => {
-  res.locals.user = req.session.userId
-    ? { username: req.session.username }
-    : null;
-  next();
-});
+app.use(currentUser);
 
 app.use(routes);
 app.use("*", (req, res) => {

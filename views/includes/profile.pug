@@ -1,1 +1,16 @@
-<p class="text">profile</p>
+div(class="profile-container bg-white me-3 d-flex flex-column")
+    div(class="d-flex flex-row justify-content-center align-items-center")
+      img(src="" class="img-fluid")
+    div(class="d-flex flex-row justify-content-center align-items-center my-3")
+      p= `${ user.username } (${ user.email })`
+    div(class="text-center d-flex flex-row justify-content-center align-items-center my-3")
+      div(class="flex-fill")
+        p
+          strong Tweet
+          br
+          span(class="text-primary")= tweets && tweets.length ? tweets.length : "-"
+      div(class="flex-fill")
+        p
+          strong Following
+          br
+          span(class="text-primary") -
