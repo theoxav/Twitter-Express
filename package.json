@@ -6,6 +6,7 @@
   "scripts": {
     "start": "NODE_ENV=productionnode index.js",
     "dev": "NODE_ENV=development nodemon index.js",
+    "seed": "node seeds/users.js && node seeds/tweets.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
