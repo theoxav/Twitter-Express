@@ -1,10 +1,43 @@
 const upload = require("../config/multer");
 const User = require("../database/models/user.model");
 const {
+  getUserTweetsFormAuthorId,
+} = require("../repositories/tweets.repository");
+const {
   createUser,
   isEmailUnique,
+  findUserByUsername,
+  searchUsersByUsername,
 } = require("../repositories/users.repository");
 const { userSchema } = require("../validations/users.validation");
+
+exports.userProfile = async (req, res, next) => {
+  try {
+    const username = req.params.username;
+    const user = await findUserByUsername(username);
+    const tweets = await getUserTweetsFormAuthorId(user._id);
+
+    res.render("tweets/tweet", {
+      tweets,
+      isAuthenticated: req.isAuthenticated(),
+      currentUser: req.user,
+      user,
+      editable: false,
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
+exports.userList = async (req, res, next) => {
+  try {
+    const search = req.query.search;
+    const users = await searchUsersByUsername(search);
+    res.render("includes/search-menu", { users });
+  } catch (e) {
+    next(e);
+  }
+};
 
 exports.signupForm = (req, res, next) => {
   res.render("users/user-form", {

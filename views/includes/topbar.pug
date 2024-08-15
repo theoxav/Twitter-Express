@@ -1,3 +1,4 @@
+script(src="/javascripts/search/search-bar.js")
 nav.navbar.navbar-expand-lg.bg-body-tertiary
   .container-fluid
     a.navbar-brand(href="/tweets")
@@ -7,6 +8,10 @@ nav.navbar.navbar-expand-lg.bg-body-tertiary
     .collapse.navbar-collapse(id="navbarNav")
       ul.navbar-nav.ms-auto.d-flex.align-items-center
         if isAuthenticated
+          li.nav-item.ms-3
+            form
+          input(type="text" class="form-control me-2" placeholder="search" id="search-input")
+          div(id="search-menu-container")
           li.nav-item
             a.btn.btn-primary.btn-tweet.me-3(href="/tweets/new") Tweet
           li.nav-item
@@ -17,6 +22,7 @@ nav.navbar.navbar-expand-lg.bg-body-tertiary
             form(method="post", action="/auth/signout", class="d-inline")
               button(type="submit", class="btn-logout")
                 i(class="fa-solid fa-power-off")
+
         else
           li.nav-item
             a.nav-link(href="/auth/signin/form") Connexion

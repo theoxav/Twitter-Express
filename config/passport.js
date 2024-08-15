@@ -2,8 +2,8 @@ const { app } = require("../app");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const {
-  findUserPerEmail,
-  findUserPerId,
+  findUserByEmail,
+  findUserById,
 } = require("../repositories/users.repository");
 
 app.use(passport.initialize());
@@ -15,7 +15,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
   try {
-    const user = await findUserPerId(id);
+    const user = await findUserById(id);
     done(null, user);
   } catch (e) {
     done(e);
@@ -30,7 +30,7 @@ passport.use(
     },
     async (email, password, done) => {
       try {
-        const user = await findUserPerEmail(email);
+        const user = await findUserByEmail(email);
         if (user) {
           const match = await user.comparePassword(password);
           if (match) {

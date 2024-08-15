@@ -1,4 +1,5 @@
 const User = require("../database/models/user.model");
+const escapeRegExp = require("../utils/regExp");
 
 exports.createUser = async (user) => {
   try {
@@ -20,10 +21,21 @@ exports.isEmailUnique = async (email) => {
   return user === null;
 };
 
-exports.findUserPerEmail = (email) => {
+exports.findUserByEmail = (email) => {
   return User.findOne({ email }).exec();
 };
 
-exports.findUserPerId = (id) => {
+exports.findUserById = (id) => {
   return User.findById(id).exec();
+};
+
+exports.findUserByUsername = (username) => {
+  return User.findOne({ username }).exec();
+};
+
+exports.searchUsersByUsername = (search) => {
+  const escapedSearch = escapeRegExp(search);
+  const regExp = `^${escapedSearch}`;
+  const reg = new RegExp(regExp);
+  return User.find({ username: { $regex: reg } }).exec();
 };
