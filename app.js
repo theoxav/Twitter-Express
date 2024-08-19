@@ -4,11 +4,16 @@ const path = require("path");
 const setupErrorHandler = require("./config/errorHandler");
 
 const app = express();
-exports.app = app;
 
 require("./config/session");
 require("./config/passport");
 const routes = require("./routes");
+
+const setupSession = require("./config/session");
+setupSession(app);
+
+const setupPassport = require("./config/passport");
+setupPassport(app);
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
