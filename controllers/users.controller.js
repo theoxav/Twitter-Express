@@ -8,6 +8,9 @@ const {
   isEmailUnique,
   findUserByUsername,
   searchUsersByUsername,
+  findUserById,
+  removeUserIdToCurrentUserFollowing,
+  addUserIdToCurrentUserFollowing,
 } = require("../repositories/users.repository");
 const { userSchema } = require("../validations/users.validation");
 
@@ -86,3 +89,29 @@ exports.uploadImage = [
     }
   },
 ];
+
+exports.followUser = async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+    const [, user] = await Promise.all([
+      addUserIdToCurrentUserFollowing(req.user, userId),
+      findUserById(userId),
+    ]);
+    res.redirect(`/users/${user.username}`);
+  } catch (e) {
+    next(e);
+  }
+};
+
+exports.unFollowUser = async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+    const [, user] = await Promise.all([
+      removeUserIdToCurrentUserFollowing(req.user, userId),
+      findUserById(userId),
+    ]);
+    res.redirect(`/users/${user.username}`);
+  } catch (e) {
+    next(e);
+  }
+};

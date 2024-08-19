@@ -52,6 +52,23 @@ body {
   background: #dc3545;
 }
 
+.btn-follow {
+  color: #007bff !important;
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  border-width: 2px;
+}
+
+.btn-follow:hover {
+  color: white !important;
+}
+
+.btn-unfollow {
+  border-radius: 30px;
+  font-weight: bold;
+}
+
 .navbar-nav .nav-link {
   transition: color 0.3s ease;
 }

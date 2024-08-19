@@ -39,3 +39,15 @@ exports.searchUsersByUsername = (search) => {
   const reg = new RegExp(regExp);
   return User.find({ username: { $regex: reg } }).exec();
 };
+
+exports.addUserIdToCurrentUserFollowing = (currentUser, userId) => {
+  currentUser.following = [...currentUser.following, userId];
+  return currentUser.save();
+};
+
+exports.removeUserIdToCurrentUserFollowing = (currentUser, userId) => {
+  currentUser.following = currentUser.following.filter(
+    (objectId) => objectId.toString() !== userId
+  );
+  return currentUser.save();
+};
