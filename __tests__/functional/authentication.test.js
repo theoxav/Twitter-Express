@@ -24,7 +24,7 @@ describe("Authentication", () => {
 
   test("should render signin form", async () => {
     const res = await request(app).get("/auth/signin/form");
-    console.log(res.text); // Pour vérifier le contenu retourné
+
     expect(res.statusCode).toBe(200);
     expect(res.text).toContain(
       '<form class="card" method="post" action="/auth/signin" id="auth-form">'
@@ -37,7 +37,7 @@ describe("Authentication", () => {
       password: "Azerty10",
     });
 
-    expect(res.statusCode).toBe(302); // redirection
+    expect(res.statusCode).toBe(302);
     expect(res.headers.location).toBe("/tweets");
   });
 

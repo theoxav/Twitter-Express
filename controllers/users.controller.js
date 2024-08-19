@@ -53,22 +53,22 @@ exports.signupForm = (req, res, next) => {
 exports.signup = async (req, res, next) => {
   const body = req.body;
 
-  const { error } = userSchema.validate(body);
+  const { error } = userSchema.validate(body, { abortEarly: false });
   if (error) {
     const errors = error.details.map((detail) => detail.message);
-    return res.render("users/user-form", { errors });
+    return res.status(400).render("users/user-form", { errors });
   }
   try {
     const isUnique = await isEmailUnique(body.email);
     if (!isUnique) {
-      return res.render("users/user-form", {
+      return res.status(400).render("users/user-form", {
         errors: ["Email déjà utilisé. Veuillez en choisir un autre."],
       });
     }
     const user = await createUser(body);
     res.redirect("/auth/signin/form");
   } catch (e) {
-    res.render("users/user-form", {
+    res.status(400).render("users/user-form", {
       errors: [e.message],
       isAuthenticated: req.isAuthenticated(),
       currentUser: req.user,
