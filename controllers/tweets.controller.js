@@ -27,6 +27,7 @@ exports.tweetNew = (req, res, next) => {
     tweet: {},
     isAuthenticated: req.isAuthenticated(),
     currentUser: req.user,
+    user: req.user,
   });
 };
 
@@ -68,6 +69,7 @@ exports.tweetEdit = async (req, res, next) => {
       tweet,
       isAuthenticated: req.isAuthenticated(),
       currentUser: req.user,
+      user: req.user,
     });
   } catch (e) {
     next(e);

@@ -18,7 +18,7 @@ function setupSession(app) {
       },
       store: MongoStore.create({
         clientPromise: dbInstance.getClientPromise(),
-        ttl: 60 * 60 * 24 * 14,
+        ttl: 60 * 60 * 24 * 30,
       }),
     })
   );

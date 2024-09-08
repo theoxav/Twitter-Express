@@ -19,6 +19,8 @@ const userSchema = schema({
     type: String,
     required: [true, "Le champ 'password' est requis"],
   },
+  passwordToken: { type: String },
+  passwordTokenExpiration: { type: Date },
   avatar: { type: String, default: "images/default-profile.svg" },
   following: { type: [schema.Types.ObjectId], ref: "user" },
 });

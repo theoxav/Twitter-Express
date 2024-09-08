@@ -11,9 +11,12 @@ const {
   findUserById,
   removeUserIdToCurrentUserFollowing,
   addUserIdToCurrentUserFollowing,
+  findUserByEmail,
 } = require("../repositories/users.repository");
 const { userSchema } = require("../validations/users.validation");
 const emailFactory = require("../emails");
+const moment = require("moment");
+const { v4: uuid } = require("uuid");
 
 exports.userProfile = async (req, res, next) => {
   try {
@@ -135,6 +138,81 @@ exports.emailLinkVerification = async (req, res, next) => {
       return res.redirect("/");
     } else {
       return res.status(400).json("Problem during email verification");
+    }
+  } catch (e) {
+    next(e);
+  }
+};
+
+exports.initResetPassword = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    if (email) {
+      const user = await findUserByEmail(email);
+
+      if (user) {
+        user.passwordToken = uuid();
+        user.passwordTokenExpiration = moment().add(2, "hours").toDate();
+
+        await user.save();
+
+        emailFactory.sendResetPasswordLink({
+          to: email,
+          host: req.headers.host,
+          userId: user._id,
+          token: user.passwordToken,
+        });
+        return res.status(200).end();
+      }
+    }
+    return res.status(400).json("Ici");
+  } catch (e) {
+    next(e);
+  }
+};
+
+exports.resetPasswordForm = async (req, res, next) => {
+  try {
+    const { userId, token } = req.params;
+    const user = await findUserById(userId);
+
+    if (user && user.passwordToken === token) {
+      return res.render("auth/auth-reset-password", {
+        url: `http://localhost:3001/users/reset-password/${userId}/${token}`,
+        errors: null,
+        isAuthenticated: false,
+      });
+    } else {
+      return res.status(400).json("Problem during password reset");
+    }
+  } catch (e) {
+    next(e);
+  }
+};
+
+exports.resetPassword = async (req, res, next) => {
+  try {
+    const { userId, token } = req.params;
+    const { password } = req.body;
+
+    const user = await findUserById(userId);
+    if (
+      password &&
+      user &&
+      user.passwordToken === token &&
+      moment() < moment(user.passwordTokenExpiration)
+    ) {
+      user.password = await User.hashPassword(password);
+      user.passwordToken = null;
+      user.passwordTokenExpiration = null;
+      await user.save();
+      return res.redirect("/");
+    } else {
+      return res.render("auth/auth-reset-password", {
+        url: `http://localhost:3001/users/reset-password/${userId}/${token}`,
+        errors: ["Problem during password reset"],
+        isAuthenticated: false,
+      });
     }
   } catch (e) {
     next(e);

@@ -5,6 +5,9 @@ const setupErrorHandler = require("./config/errorHandler");
 
 const app = express();
 
+const Database = require("./database/connection");
+Database.getInstance();
+
 require("./config/session");
 require("./config/passport");
 const routes = require("./routes");
