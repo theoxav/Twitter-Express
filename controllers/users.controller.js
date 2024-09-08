@@ -13,6 +13,7 @@ const {
   addUserIdToCurrentUserFollowing,
 } = require("../repositories/users.repository");
 const { userSchema } = require("../validations/users.validation");
+const emailFactory = require("../emails");
 
 exports.userProfile = async (req, res, next) => {
   try {
@@ -66,6 +67,13 @@ exports.signup = async (req, res, next) => {
       });
     }
     const user = await createUser(body);
+    emailFactory.sendEmailVerification({
+      to: user.email,
+      host: req.headers.host,
+      username: user.username,
+      userId: user._id,
+      token: user.emailToken,
+    });
     res.redirect("/auth/signin/form");
   } catch (e) {
     res.status(400).render("users/user-form", {
@@ -111,6 +119,23 @@ exports.unFollowUser = async (req, res, next) => {
       findUserById(userId),
     ]);
     res.redirect(`/users/${user.username}`);
+  } catch (e) {
+    next(e);
+  }
+};
+
+exports.emailLinkVerification = async (req, res, next) => {
+  try {
+    const { userId, token } = req.params;
+    const user = await findUserById(userId);
+
+    if (user && token && token === user.emailToken) {
+      user.emailVerified = true;
+      await user.save();
+      return res.redirect("/");
+    } else {
+      return res.status(400).json("Problem during email verification");
+    }
   } catch (e) {
     next(e);
   }

@@ -1,5 +1,6 @@
 const User = require("../database/models/user.model");
 const escapeRegExp = require("../utils/regExp");
+const { v4: uuid } = require("uuid");
 
 exports.createUser = async (user) => {
   try {
@@ -8,6 +9,7 @@ exports.createUser = async (user) => {
       username: user.username,
       email: user.email,
       password: hashedPassword,
+      emailToken: uuid(),
     });
 
     return newUser.save();
